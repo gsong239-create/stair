@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://gsong239-create.github.io/stair/">
+        <meta property="og:title" content="서울여자대학교 계단 CCTV">
+        <meta property="og:description" content="늦은 밤의 서울여대 건물 계단 CCTV을 한눈에 확인하세요.">
+        <meta property="og:image" content="https://gsong239-create.github.io/stair/forog.jpg"> 
+        <title>Homepage Redirect</title>
+
+        <meta http-equiv="refresh" content="0; url=1.home/index.html"> 
+    </head>
+    <body>
+        <p>Loading the homepage. If you are not redirected, <a href="1.home/index.html">click here to proceed</a>.</p>
+    </body>
+</html>
