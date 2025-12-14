@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>서울여대 누리관 계단 cctv</title>
+        <meta name="description" content="서울여대 누리관을 cctv 관점으로 보면서 밤의 누리관 분위기를 경비원의 시야로 바라볼 수 있게 한 웹페이지">
+        <meta name="keywords" content="카메라 이름, 지리위치, 카메라 위치정보내용, 경비원의 일지, 소리재생, 되돌아가기, 현재시간과 현재 페이지 접근시간">
+        <link rel="stylesheet" href="nuri.css">
+    </head>
+
+    <body>
+        <h1>CAM NURI</h1>
+        
+        <h2>37.628709,127.090481</h2>
+        
+        <ol>
+             <h3 class="highlight">cctv 위치 정보: 누리관</h3>
+           <p class="log">경비원의 일지:</p>
+
+           <p>누리관은 서울여대의 중앙에 위치해 있으면서도 가장 독특한 디자인의 건물이다</p>
+
+           <p>누리관은 유일하게 학생들의 즐거운 목적으로 가득찬 공간이다. 하지만 밤에는 모든 발걸음이 끊긴다.
+           </p>
+           <p>서울여대에서 가장 낮의 분위기와 밤의 분위기 이질적인 공간이다.</p>
+        </ol>
+
+        <section id="time-display-container">
+            <div id="current-time"></div>
+            <div id="countdown-timer"></div>
+        </section>
+
+        <img class="warning-img" src="nuri-1-2.jpg" alt="홈페이지로 돌아가기 위한 누리관 1층 계단 CCTV 이미지">
+
+        <a href="../1.home/index.html">
+        <img class="warning-img" src="nuri-1-2.jpg" alt="홈페이지로 돌아가기 위한 누리관 1층 계단 CCTV 이미지">
+        </a>
+        
+        <figure id="audio-control-figure" onclick="toggleAudio()">
+            <img src="—Pngtree—vector play button icon_4239632-2.png" alt="계단을 걷는 소리가 나는 회색 재생 버튼">
+        </figure>
+
+        <audio id="stairs-audio" src="stairs_12.wav" loop></audio>
+        
+        <div id="anomaly-text">!이상현상 감지!</div> 
+        <div id="target-frame"></div>
+
+        
+        <script>
+    let pageAccessTime = null;
+
+    function setPageAccessTime() {
+        const now = new Date(); 
+        
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const days = ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'];
+        const dayOfWeek = days[now.getDay()];  
+        
+        const month = String(now.getMonth() + 1).padStart(2, '0');  
+        const date = String(now.getDate()).padStart(2, '0');
+
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        
+        document.getElementById('current-time').innerHTML = 
+            `Current Time: ${timeString}<br>${month}.${date}.${dayOfWeek}`;
+            
+        if (pageAccessTime === null) {
+            pageAccessTime = now;
+        }
+        const accessHours = String(pageAccessTime.getHours()).padStart(2, '0');
+        const accessMinutes = String(pageAccessTime.getMinutes()).padStart(2, '0');
+        const accessSeconds = String(pageAccessTime.getSeconds()).padStart(2, '0');
+
+        document.getElementById('countdown-timer').textContent = 
+            `Accessed at: ${accessHours}:${accessMinutes}:${accessSeconds}`;
+    }
+
+    function toggleAudio() {
+        const audio = document.getElementById('stairs-audio');
+        
+        if (audio.paused) {
+            audio.play()
+                .then(() => {
+                    console.log("Audio playing");
+                })
+                .catch(error => {
+                    console.error("Audio playback failed:", error);
+                    alert("브라우저 설정 때문에 오디오 자동 재생이 차단될 수 있습니다.");
+                });
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            console.log("Audio paused");
+        }
+    }
+
+    function setupTargetFrame() {
+        const frame = document.getElementById('target-frame');
+        const anomalyText = document.getElementById('anomaly-text'); 
+        
+        function setRandomPosition() {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            const frameSize = 60;  
+            
+            const randomX = Math.floor(Math.random() * (viewportWidth - frameSize));
+            const randomY = Math.floor(Math.random() * (viewportHeight - frameSize));
+            
+            frame.style.left = `${randomX}px`;
+            frame.style.top = `${randomY}px`;
+
+            anomalyText.style.left = `${randomX}px`;
+            anomalyText.style.top = `${randomY - 20}px`; 
+        }
+        
+        setRandomPosition();  
+        
+        window.addEventListener('resize', setRandomPosition);  
+
+        frame.addEventListener('click', () => {
+            const olElement = document.querySelector('ol');
+            
+            olElement.classList.add('visible');  
+            
+            frame.remove();  
+            anomalyText.remove(); 
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setPageAccessTime();
+        setInterval(setPageAccessTime, 1000); 
+        setupTargetFrame(); 
+    });
+</script>
+    </body>
+</html>
