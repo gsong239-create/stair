@@ -1,0 +1,144 @@
+<<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>서울여대 조형예술관 계단 cctv</title>
+        <meta name="description" content="서울여대 조형예술관을 cctv 관점으로 보면서 밤의 조형예술관 분위기를 경비원의 시야로 바라볼 수 있게 한 웹페이지">
+        <meta name="keywords" content="카메라 이름, 지리위치, 카메라 위치정보내용, 경비원의 일지, 소리재생, 되돌아가기, 현재시간과 현재 페이지 접근시간">
+        <link rel="stylesheet" href="art.css">
+    </head>
+
+    <body>
+        <h1>CAM FOMATIVE ART</h1>
+        
+        <h2>37.629000,127.091768</h2>
+        
+        <ol>
+            <h3 class="highlight">cctv 위치 정보: 조형예술관</h3>
+            <p class="log">경비원의 일지:</p>
+
+            <p>조형예술관은 서울여대 캠퍼스 중앙에 위치해 있다.</p>
+
+            <p>조형예술관은 작업실 특성상 밤에도 불이 켜진 곳이 많다. 이 계단은 주로 실기실과 연결되어 있다.
+            </p>
+            <p> 이 계단은 복잡한 철제 난간과 빛바랜 구조로 인해 기하학적 형태의 그림자를 많이 만든다.</p>
+        </ol>
+
+        <section id="time-display-container">
+            <div id="current-time"></div>
+            <div id="countdown-timer"></div>
+        </section>
+
+        <img class="warning-img" src="art-1-2.jpg" alt="홈페이지로 돌아가기 위한 조형예술관 5층 CCTV 이미지">
+
+        <a href="../1.home/index.html">
+        <img class="warning-img" src="art-1-2.jpg" alt="홈페이지로 돌아가기 위한 조형예술관 5층 CCTV 이미지">
+        </a>
+        
+        <figure id="audio-control-figure" onclick="toggleAudio()">
+            <img src="—Pngtree—vector play button icon_4239632-4.png" alt="계단을 걷는 소리가 나는 회색 재생 버튼">
+        </figure>
+
+        <audio id="stairs-audio" src="stairs 9.wav" loop></audio>
+        
+        <div id="anomaly-text">!이상현상 감지!</div> 
+        <div id="target-frame"></div>
+
+        
+        <script>
+    let pageAccessTime = null;
+
+    function setPageAccessTime() {
+        const now = new Date(); 
+        
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const days = ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'];
+        const dayOfWeek = days[now.getDay()];  
+        
+        const month = String(now.getMonth() + 1).padStart(2, '0');  
+        const date = String(now.getDate()).padStart(2, '0');
+
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        
+        document.getElementById('current-time').innerHTML = 
+            `Current Time: ${timeString}<br>${month}.${date}.${dayOfWeek}`;
+            
+        
+        if (pageAccessTime === null) {
+            pageAccessTime = now;
+        }
+        const accessHours = String(pageAccessTime.getHours()).padStart(2, '0');
+        const accessMinutes = String(pageAccessTime.getMinutes()).padStart(2, '0');
+        const accessSeconds = String(pageAccessTime.getSeconds()).padStart(2, '0');
+
+        document.getElementById('countdown-timer').textContent = 
+            `Accessed at: ${accessHours}:${accessMinutes}:${accessSeconds}`;
+    }
+
+    function toggleAudio() {
+        const audio = document.getElementById('stairs-audio');
+        
+        if (audio.paused) {
+            audio.play()
+                .then(() => {
+                    console.log("Audio playing");
+                })
+                .catch(error => {
+                    console.error("Audio playback failed:", error);
+                    alert("브라우저 설정 때문에 오디오 자동 재생이 차단될 수 있습니다.");
+                });
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            console.log("Audio paused");
+        }
+    }
+
+    function setupTargetFrame() {
+        const frame = document.getElementById('target-frame');
+        const anomalyText = document.getElementById('anomaly-text'); 
+        
+        function setRandomPosition() {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            const frameSize = 60;  
+            
+            const randomX = Math.floor(Math.random() * (viewportWidth - frameSize));
+            const randomY = Math.floor(Math.random() * (viewportHeight - frameSize));
+            
+            frame.style.left = `${randomX}px`;
+            frame.style.top = `${randomY}px`;
+
+            anomalyText.style.left = `${randomX}px`;
+            anomalyText.style.top = `${randomY - 20}px`; 
+        }
+        
+        setRandomPosition();  
+        
+        window.addEventListener('resize', setRandomPosition);  
+
+        frame.addEventListener('click', () => {
+            const olElement = document.querySelector('ol');
+            
+            olElement.classList.add('visible');  
+            
+            frame.remove();  
+            anomalyText.remove(); 
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        setPageAccessTime();
+        
+        setInterval(setPageAccessTime, 1000); 
+        setupTargetFrame(); 
+    });
+</script>
+    </body>
+</html>
