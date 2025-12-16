@@ -42,7 +42,7 @@
 
         <audio id="stairs-audio" src="stairs 9.wav" loop></audio>
         
-        <div id="anomaly-text">!이상현상 감지!</div> 
+
         <div id="target-frame"></div>
 
         
@@ -113,9 +113,6 @@
             
             frame.style.left = `${randomX}px`;
             frame.style.top = `${randomY}px`;
-
-            anomalyText.style.left = `${randomX}px`;
-            anomalyText.style.top = `${randomY - 20}px`; 
         }
         
         setRandomPosition();  
@@ -128,7 +125,6 @@
             olElement.classList.add('visible');  
             
             frame.remove();  
-            anomalyText.remove(); 
         });
     }
 
