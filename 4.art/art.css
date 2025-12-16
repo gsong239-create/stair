@@ -69,15 +69,6 @@ ol.visible {
     z-index: 10;
 }
 
-#anomaly-text {
-    position: absolute; 
-    color: red; 
-    font-weight: bold;
-    z-index: 12; 
-    pointer-events: none;
-    transform: translateX(-50%); 
-    white-space: nowrap;
-}
 
 @keyframes slow-blink {
     0% { opacity: 1; }
